@@ -235,7 +235,7 @@ function photoCard(d) {
 const boxes = { story: $("#stories-grid"), video: $("#videos-grid"), photo: $("#photos-grid") };
 const msgs = { story: "لسا ما في حكايات. ارجع قريب.", video: "لسا ما في فيديوهات.", photo: "لسا ما في صور." };
 const makers = { story: storyCard, video: videoCard, photo: photoCard };
-onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(40)), snap => {
+onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(60)), snap => {
   const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   for (const t in boxes) {
     const arr = all.filter(x => x.type === t);
@@ -265,31 +265,18 @@ function sync() {
 document.querySelectorAll(".types button").forEach(b => b.onclick = () => { type = b.dataset.t; sync(); });
 sync();
 
-async function shrink(file, max = 1600, q = 0.85) {
+async function shrink(file) {
   if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
   const bmp = await createImageBitmap(file);
-  const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
   const c = document.createElement("canvas");
   c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
   c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-  return new Promise(r => c.toBlob(r, "image/jpeg", q));
+  return new Promise(r => c.toBlob(r, "image/jpeg", 0.85));
 }
 async function upload(blob, folder, ext) {
   const r = ref(storage, `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`);
   await uploadBytes(r, blob); return getDownloadURL(r);
-}
-storage.maxUploadRetryTime = 10000;
-const timeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
-const toDataURL = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); });
-// يحاول Storage أولاً، وإذا ما اشتغل بيحفظ الصورة مصغّرة داخل قاعدة البيانات (مجاني)
-async function saveImage(file) {
-  try { return await timeout(upload(await shrink(file), "images", "jpg"), 15000); }
-  catch (e) {
-    console.warn("Storage غير متاح، حفظ داخل Firestore", e);
-    const url = await toDataURL(await shrink(file, 1000, 0.7));
-    if (url.length > 900000) throw new Error("الصورة كبيرة، جرب صورة أصغر.");
-    return url;
-  }
 }
 $("#post").onsubmit = async e => {
   e.preventDefault();
@@ -300,7 +287,7 @@ $("#post").onsubmit = async e => {
       const files = [...$("#image").files];
       if (!files.length) throw new Error("اختار صورة وحدة على الأقل.");
       for (const f of files) {
-        const url = await saveImage(f);
+        const url = await upload(await shrink(f), "images", "jpg");
         await addDoc(collection(db, "posts"), { type, title, imageUrl: url, createdAt: serverTimestamp() });
       }
     } else {
@@ -308,13 +295,10 @@ $("#post").onsubmit = async e => {
       if (type === "story") {
         data.summary = $("#summary").value.trim(); data.body = $("#body").value.trim();
         const img = $("#image").files[0];
-        if (img) data.imageUrl = await saveImage(img);
+        if (img) data.imageUrl = await upload(await shrink(img), "images", "jpg");
       }
       const vf = $("#videoFile").files[0], link = $("#videoUrl").value.trim();
-      if (vf) {
-        try { data.videoUrl = await timeout(upload(vf, "videos", (vf.name.split(".").pop() || "mp4").toLowerCase()), 120000); }
-        catch { throw new Error("رفع الفيديو بدو Storage مفعّل. استخدم رابط يوتيوب بدالو."); }
-      }
+      if (vf) data.videoUrl = await upload(vf, "videos", (vf.name.split(".").pop() || "mp4").toLowerCase());
       else if (link) data.videoUrl = link;
       if (type === "video" && !data.videoUrl) throw new Error("حط رابط يوتيوب أو ارفع فيديو.");
       await addDoc(collection(db, "posts"), data);
