@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="author" content="معتز إياد عطا">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>حكايات المخيم</title>
 <meta name="description" content="موقع يوثق ذكريات وقصص وصور وفيديوهات أهل المخيم.">
@@ -78,13 +79,66 @@ input,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid va
 .msg{min-height:24px;font-weight:600}.ok{color:#2e7d32}.bad{color:#c62828}
 @media(max-width:800px){nav{display:none}.hero p{font-size:16px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.menu{position:relative}
+.dots{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:24px;line-height:1;cursor:pointer;color:var(--accent-d)}
+.dropdown{position:absolute;top:48px;left:0;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(80,50,20,.22);overflow:hidden}
+.dropdown button{display:block;width:100%;text-align:right;padding:11px 16px;border:0;background:none;font:600 15px 'Cairo',sans-serif;color:var(--ink);cursor:pointer}
+.dropdown button:hover{background:var(--paper2)}
+.yt{position:relative;display:block;width:100%;height:100%;border:0;padding:0;background:#000;cursor:pointer}
+.yt img{width:100%;height:100%;object-fit:cover;opacity:.85}
+.play{position:absolute;inset:0;display:grid;place-items:center;font-size:46px;color:#fff;text-shadow:0 2px 14px #000}
+.more-wrap{text-align:center;padding:0 6% 30px}
+/* ===== حركة وروح ===== */
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(26px)}}
+@keyframes down{from{transform:translateY(-100%)}}
+@keyframes pop{from{opacity:0;transform:scale(.6) rotate(-6deg)}}
+@keyframes float{0%,100%{transform:translateY(0);box-shadow:0 20px 50px rgba(80,50,20,.28)}50%{transform:translateY(-14px);box-shadow:0 34px 60px rgba(168,103,42,.38)}}
+@keyframes drift{from{transform:scale(1.05) translate(-12px,8px)}to{transform:scale(1.16) translate(14px,-10px)}}
+@keyframes rise{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:.9}100%{transform:translate(var(--x),-100vh) scale(.3);opacity:0}}
+@keyframes pop2{from{opacity:0;transform:scale(.85) translateY(-6px)}}
+@keyframes sheet{from{opacity:0;transform:translateY(30px) scale(.96)}}
+@keyframes pulse{50%{transform:scale(1.15)}}
+@keyframes blink{50%{opacity:.45}}
+header{animation:down .7s cubic-bezier(.2,.8,.2,1) both}
+.hero>div{position:relative;z-index:1}
+.hero::before{animation:drift 20s ease-in-out infinite alternate}
+.hero-logo{animation:pop 1s cubic-bezier(.2,.8,.2,1) both,float 6s ease-in-out 1s infinite}
+.hero p{animation:up .9s .35s both}
+.hero .hero-buttons{animation:up .9s .55s both}
+.spark{position:absolute;bottom:-10px;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#ffd89a,#e58a2b 60%,transparent);box-shadow:0 0 10px 2px rgba(229,138,43,.6);opacity:0;pointer-events:none;animation:rise var(--t) linear var(--dl) infinite}
+nav a{position:relative}
+nav a::after{content:"";position:absolute;inset:auto 0 -2px 0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .3s}
+nav a:hover::after{transform:scaleX(1)}
+.logo i{transition:transform .4s}.logo:hover i{transform:rotate(-8deg) scale(1.1)}
+.btn{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .6s}
+.btn:hover::after{left:140%}
+.btn:active{transform:scale(.96)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(168,103,42,.4)}
+.section-title h2::after{content:"";display:block;width:70px;height:3px;margin:6px auto 0;border-radius:3px;background:var(--accent)}
+.rv{opacity:0;transform:translateY(30px) scale(.97);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+.card-image img{transition:transform .5s}
+button.card:hover .card-image img{transform:scale(1.08)}
+.read-more{transition:transform .25s}button.card:hover .read-more{transform:translateX(-6px)}
+.play{animation:pulse 2s ease-in-out infinite}
+.yt:hover img{opacity:1}
+.empty{animation:blink 1.6s ease-in-out infinite}
+.dots{transition:transform .3s,background .2s}
+.dots:hover,.dots[aria-expanded=true]{transform:rotate(90deg);background:var(--paper2)}
+.dropdown:not([hidden]){animation:pop2 .22s cubic-bezier(.2,.9,.3,1.3);transform-origin:top left}
+.dropdown button{transition:background .2s,padding .2s}.dropdown button:hover{padding-right:22px}
+.modal:not([hidden]),.lightbox:not([hidden]){animation:fade .25s}
+.modal:not([hidden]) .sheet,.lightbox:not([hidden]) img{animation:sheet .35s cubic-bezier(.2,.9,.3,1.1)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.rv{opacity:1;transform:none}.spark{display:none}}
 </style>
 </head>
 <body>
 <header><div class="navbar">
   <a class="logo" href="#home"><i role="img" aria-label="شعار"></i><span>حكايات المخيم</span></a>
   <nav><a href="#stories">الحكايات</a><a href="#videos">الفيديوهات</a><a href="#photos">الصور</a><a href="#about">من نحن</a><a href="#contact">تواصل معنا</a></nav>
-  <button class="btn btn-outline btn-sm" id="openAdmin" type="button">الإدارة</button>
+  <div class="menu"><button class="dots" id="dots" type="button" aria-label="القائمة" aria-haspopup="true" aria-expanded="false">⋮</button><div class="dropdown" id="dd" hidden><button type="button" data-a="create">＋ إنشاء</button><button type="button" data-a="settings">⚙ إعدادات</button></div></div>
 </div></header>
 
 <section class="hero" id="home"><div>
@@ -112,6 +166,8 @@ input,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid va
   <div class="cards" id="photos-grid"><p class="empty">جاري التحميل...</p></div>
 </section>
 
+<div class="more-wrap"><button class="btn btn-outline" id="more" type="button" hidden>تحميل المزيد</button></div>
+
 <section id="about" class="alt">
   <div class="section-title"><h2>من نحن</h2></div>
   <p class="about">حكايات المخيم موقع يوثق القصص والذكريات والصور والفيديوهات التي تحكي تاريخ وحياة أهل المخيم. هدفنا الحفاظ على الذاكرة الشعبية ونقلها للأجيال القادمة بطريقة حديثة وسهلة.</p>
@@ -119,9 +175,9 @@ input,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid va
 
 <section class="contact" id="contact">
   <div class="section-title"><h2>شاركنا حكايتك</h2><p>عندك صورة قديمة أو قصة أو فيديو؟ ساهم معنا في توثيق ذاكرة المخيم.</p></div>
-  <a href="mailto:info@example.com" class="btn btn-main">تواصل معنا</a>
+  <div class="hero-buttons"><a class="btn btn-main" href="https://wa.me/962775279117" target="_blank" rel="noopener">واتساب</a><a class="btn btn-outline" href="tel:0775279117" dir="ltr">0775279117</a></div>
 </section>
-<footer>© حكايات المخيم</footer>
+<footer>© حكايات المخيم · إنشاء وتطوير الموقع: معتز إياد عطا</footer>
 
 <!-- نافذة الحكاية -->
 <div class="modal" id="storyModal" hidden><div class="sheet"><button class="close" type="button" aria-label="إغلاق">✕</button><article id="storyBody"></article></div></div>
@@ -158,9 +214,22 @@ input,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid va
   </div>
 </div></div>
 
+<!-- نافذة الإعدادات -->
+<div class="modal" id="setModal" hidden><div class="sheet">
+  <button class="close" type="button" aria-label="إغلاق">✕</button>
+  <h1 style="font-size:30px;margin-bottom:16px">الإعدادات</h1>
+  <div style="display:grid;gap:12px">
+    <button class="btn btn-outline" id="refresh" type="button">تحديث المحتوى الآن</button>
+    <div id="adm-only" style="display:grid;gap:12px" hidden>
+      <button class="btn btn-main" id="optimize" type="button">تحسين الصور القديمة (توفير استهلاك)</button>
+      <p class="msg" id="set-msg"></p>
+    </div>
+  </div>
+</div></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, query, orderBy, limit, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, query, orderBy, limit, startAfter, getDocs, getDoc, addDoc, updateDoc, deleteDoc, deleteField, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -180,45 +249,68 @@ const $ = s => document.querySelector(s);
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 const empty = (box, m) => box.replaceChildren(el("p", "empty", m));
 const ytId = u => (u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/) || [])[1];
+const fmtDate = s => s ? new Date(s * 1000).toLocaleDateString("ar-JO") : "";
+
+// فيديو يوتيوب: صورة مصغرة فقط، ولا يتحمل المشغّل إلا لما الزائر يضغط تشغيل
 function videoEl(u) {
   const id = ytId(u);
-  if (id) { const f = el("iframe"); f.src = "https://www.youtube-nocookie.com/embed/" + id; f.allowFullscreen = true; f.loading = "lazy"; f.title = "فيديو"; return f; }
-  const v = el("video"); v.src = u; v.controls = true; v.preload = "metadata"; return v;
+  if (id) {
+    const b = el("button", "yt"); b.type = "button"; b.setAttribute("aria-label", "تشغيل الفيديو");
+    const i = el("img"); i.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; i.alt = ""; i.loading = "lazy";
+    b.append(i, el("span", "play", "▶"));
+    b.onclick = () => { const f = el("iframe"); f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`; f.allow = "autoplay; fullscreen"; f.allowFullscreen = true; f.title = "فيديو"; b.replaceWith(f); };
+    return b;
+  }
+  const v = el("video"); v.src = u; v.controls = true; v.preload = "none"; v.playsInline = true; return v;
 }
-const fmtDate = ts => ts?.toDate ? ts.toDate().toLocaleDateString("ar-JO") : "";
 const vbox = u => { const b = el("div", "video-box"); b.append(videoEl(u)); return b; };
 
-/* ===== نوافذ ===== */
+/* ===== نوافذ + قائمة النقاط الثلاث ===== */
 function wireModal(m) {
   const hide = () => (m.hidden = true);
   m.querySelector(".close").onclick = hide;
   m.addEventListener("click", e => e.target === m && hide());
   document.addEventListener("keydown", e => e.key === "Escape" && hide());
 }
-const storyModal = $("#storyModal"), adminModal = $("#adminModal");
-wireModal(storyModal); wireModal(adminModal);
-$("#openAdmin").onclick = () => { adminModal.hidden = false; };
+const storyModal = $("#storyModal"), adminModal = $("#adminModal"), setModal = $("#setModal");
+[storyModal, adminModal, setModal].forEach(wireModal);
+const dd = $("#dd"), dots = $("#dots");
+dots.onclick = e => { e.stopPropagation(); dd.hidden = !dd.hidden; dots.setAttribute("aria-expanded", String(!dd.hidden)); };
+document.addEventListener("click", () => { dd.hidden = true; dots.setAttribute("aria-expanded", "false"); });
+dd.onclick = e => { const a = e.target.dataset.a; if (a) (a === "create" ? adminModal : setModal).hidden = false; };
 if (location.hash === "#admin") adminModal.hidden = false;
 
+/* ===== الصور الكبيرة بتنجاب فقط لما الزائر يفتحها ===== */
+const blobCache = new Map();
+async function fullOf(d) {
+  if (d.imageUrl) return d.imageUrl;
+  if (!d.imageRef) return d.thumb;
+  if (!blobCache.has(d.imageRef)) { const s = await getDoc(doc(db, "blobs", d.imageRef)); blobCache.set(d.imageRef, s.exists() ? s.data().data : d.thumb); }
+  return blobCache.get(d.imageRef);
+}
 function openStory(d) {
   const nodes = [el("h1", "", d.title), el("p", "date", fmtDate(d.createdAt))];
-  if (d.imageUrl) { const i = el("img", "story-cover"); i.src = d.imageUrl; i.alt = d.title; nodes.push(i); }
+  if (d.thumb || d.imageUrl) {
+    const i = el("img", "story-cover"); i.src = d.thumb || d.imageUrl; i.alt = d.title; nodes.push(i);
+    if (d.thumb) fullOf(d).then(u => { if (u) i.src = u; }).catch(() => {});
+  }
   (d.body || d.summary || "").split(/\n+/).filter(Boolean).forEach(t => nodes.push(el("p", "story-text", t)));
   if (d.videoUrl) nodes.push(vbox(d.videoUrl));
   $("#storyBody").replaceChildren(...nodes);
   storyModal.hidden = false; storyModal.scrollTop = 0;
 }
-
-/* ===== عرض المحتوى (تحديث مباشر) ===== */
 const lb = el("div", "lightbox"); lb.hidden = true;
 const lbImg = el("img"), lbCap = el("p"); lb.append(lbImg, lbCap);
 lb.onclick = () => (lb.hidden = true); document.body.append(lb);
-const zoom = d => { lbImg.src = d.imageUrl; lbCap.textContent = d.title || ""; lb.hidden = false; };
+async function zoom(d) {
+  lbImg.src = d.thumb || d.imageUrl; lbCap.textContent = d.title || ""; lb.hidden = false;
+  try { const u = await fullOf(d); if (u && !lb.hidden) lbImg.src = u; } catch {}
+}
 
 function storyCard(d) {
   const b = el("button", "card"); b.type = "button";
   const im = el("div", "card-image");
-  if (d.imageUrl) { const i = el("img"); i.src = d.imageUrl; i.alt = d.title; i.loading = "lazy"; im.append(i); }
+  if (d.thumb || d.imageUrl) { const i = el("img"); i.src = d.thumb || d.imageUrl; i.alt = d.title; i.loading = "lazy"; im.append(i); }
   const c = el("div", "card-content");
   c.append(el("h3", "", d.title), el("p", "", d.summary || ""), el("span", "read-more", "اقرأ الحكاية ←"));
   b.append(im, c); b.onclick = () => openStory(d); return b;
@@ -229,19 +321,37 @@ function videoCard(d) {
 }
 function photoCard(d) {
   const b = el("button", "photo"); b.type = "button"; b.setAttribute("aria-label", d.title || "صورة");
-  const i = el("img"); i.src = d.imageUrl; i.alt = d.title || ""; i.loading = "lazy";
+  const i = el("img"); i.src = d.thumb || d.imageUrl; i.alt = d.title || ""; i.loading = "lazy";
   b.append(i); b.onclick = () => zoom(d); return b;
 }
 const boxes = { story: $("#stories-grid"), video: $("#videos-grid"), photo: $("#photos-grid") };
 const msgs = { story: "لسا ما في حكايات. ارجع قريب.", video: "لسا ما في فيديوهات.", photo: "لسا ما في صور." };
 const makers = { story: storyCard, video: videoCard, photo: photoCard };
-onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(40)), snap => {
-  const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  for (const t in boxes) {
-    const arr = all.filter(x => x.type === t);
-    arr.length ? boxes[t].replaceChildren(...arr.map(makers[t])) : empty(boxes[t], msgs[t]);
+
+/* ===== جلب المحتوى: قراءة وحدة (مش مباشرة) + كاش 10 دقايق ===== */
+const PAGE = 30, CK = "hm_feed_v2", TTL = 10 * 60 * 1000;
+let posts = [], more = false;
+function render() {
+  for (const t in boxes) { const a = posts.filter(x => x.type === t); a.length ? boxes[t].replaceChildren(...a.map(makers[t])) : empty(boxes[t], msgs[t]); }
+  $("#more").hidden = !more; renderList();
+}
+async function load(next = false, force = false) {
+  if (!next && !force) {
+    try { const c = JSON.parse(localStorage.getItem(CK)); if (c && Date.now() - c.t < TTL) { posts = c.p; more = c.m; return render(); } } catch {}
   }
-}, e => { console.error(e); for (const t in boxes) empty(boxes[t], "تعذر تحميل المحتوى."); });
+  try {
+    const parts = [collection(db, "posts"), orderBy("createdAt", "desc")];
+    if (next && posts.length) parts.push(startAfter(await getDoc(doc(db, "posts", posts[posts.length - 1].id))));
+    const snap = await getDocs(query(...parts, limit(PAGE)));
+    const got = snap.docs.map(d => { const x = d.data(); return { id: d.id, ...x, createdAt: x.createdAt?.seconds ?? null }; });
+    posts = next ? posts.concat(got) : got; more = got.length === PAGE;
+    if (!next) try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), p: posts, m: more })); } catch {}
+    render();
+  } catch (e) { console.error(e); if (!posts.length) for (const t in boxes) empty(boxes[t], "تعذر تحميل المحتوى."); }
+}
+$("#more").onclick = async e => { e.target.disabled = true; await load(true); e.target.disabled = false; };
+$("#refresh").onclick = async () => { localStorage.removeItem(CK); await load(false, true); setModal.hidden = true; };
+load();
 
 /* ===== الإدارة ===== */
 const say = (t, bad) => { const m = $("#msg"); m.textContent = t; m.className = "msg " + (bad ? "bad" : "ok"); };
@@ -251,7 +361,7 @@ $("#login").onsubmit = async e => {
   catch { $("#login-msg").textContent = "كلمة السر غلط."; }
 };
 $("#logout").onclick = () => signOut(auth);
-onAuthStateChanged(auth, u => { $("#login").hidden = !!u; $("#panel").hidden = !u; });
+onAuthStateChanged(auth, u => { $("#login").hidden = !!u; $("#panel").hidden = !u; $("#adm-only").hidden = !u; });
 
 let type = "story";
 function sync() {
@@ -265,7 +375,7 @@ function sync() {
 document.querySelectorAll(".types button").forEach(b => b.onclick = () => { type = b.dataset.t; sync(); });
 sync();
 
-async function shrink(file, max = 1600, q = 0.85) {
+async function shrink(file, max = 1280, q = 0.75) {
   if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
   const bmp = await createImageBitmap(file);
   const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
@@ -274,22 +384,28 @@ async function shrink(file, max = 1600, q = 0.85) {
   c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
   return new Promise(r => c.toBlob(r, "image/jpeg", q));
 }
-async function upload(blob, folder, ext) {
+const META = { contentType: "image/jpeg", cacheControl: "public,max-age=31536000" };
+async function upload(blob, folder, ext, meta) {
   const r = ref(storage, `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`);
-  await uploadBytes(r, blob); return getDownloadURL(r);
+  await uploadBytes(r, blob, meta); return getDownloadURL(r);
 }
 storage.maxUploadRetryTime = 10000;
 const timeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
 const toDataURL = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); });
-// يحاول Storage أولاً، وإذا ما اشتغل بيحفظ الصورة مصغّرة داخل قاعدة البيانات (مجاني)
+// كل صورة بتنحفظ نسختين: مصغّرة خفيفة (للعرض) وكبيرة (بتنجاب لما الزائر يفتحها)
+let storageOK = true;
 async function saveImage(file) {
-  try { return await timeout(upload(await shrink(file), "images", "jpg"), 15000); }
-  catch (e) {
-    console.warn("Storage غير متاح، حفظ داخل Firestore", e);
-    const url = await toDataURL(await shrink(file, 1000, 0.7));
-    if (url.length > 900000) throw new Error("الصورة كبيرة، جرب صورة أصغر.");
-    return url;
+  const thumbB = await shrink(file, 480, 0.6);
+  if (storageOK) {
+    try { return await timeout(Promise.all([upload(thumbB, "thumbs", "jpg", META), upload(await shrink(file), "images", "jpg", META)]).then(([thumb, imageUrl]) => ({ thumb, imageUrl })), 12000); }
+    catch (e) { storageOK = false; console.warn("Storage غير متاح، حفظ داخل Firestore", e); }
   }
+  const thumb = await toDataURL(thumbB);
+  for (const [m, q] of [[1280, 0.7], [1000, 0.6], [800, 0.5]]) {
+    const url = await toDataURL(await shrink(file, m, q));
+    if (url.length < 900000) { const r = await addDoc(collection(db, "blobs"), { data: url }); return { thumb, imageRef: r.id }; }
+  }
+  throw new Error("الصورة كبيرة، جرب صورة أصغر.");
 }
 $("#post").onsubmit = async e => {
   e.preventDefault();
@@ -299,20 +415,18 @@ $("#post").onsubmit = async e => {
     if (type === "photo") {
       const files = [...$("#image").files];
       if (!files.length) throw new Error("اختار صورة وحدة على الأقل.");
-      for (const f of files) {
-        const url = await saveImage(f);
-        await addDoc(collection(db, "posts"), { type, title, imageUrl: url, createdAt: serverTimestamp() });
-      }
+      for (const f of files) await addDoc(collection(db, "posts"), { type, title, ...(await saveImage(f)), createdAt: serverTimestamp() });
     } else {
       const data = { type, title, createdAt: serverTimestamp() };
       if (type === "story") {
         data.summary = $("#summary").value.trim(); data.body = $("#body").value.trim();
         const img = $("#image").files[0];
-        if (img) data.imageUrl = await saveImage(img);
+        if (img) Object.assign(data, await saveImage(img));
       }
       const vf = $("#videoFile").files[0], link = $("#videoUrl").value.trim();
       if (vf) {
-        try { data.videoUrl = await timeout(upload(vf, "videos", (vf.name.split(".").pop() || "mp4").toLowerCase()), 120000); }
+        if (vf.size > 30 * 1024 * 1024) throw new Error("الفيديو كبير. استخدم رابط يوتيوب (أوفر للاستهلاك).");
+        try { data.videoUrl = await timeout(upload(vf, "videos", (vf.name.split(".").pop() || "mp4").toLowerCase(), { cacheControl: "public,max-age=31536000" }), 120000); }
         catch { throw new Error("رفع الفيديو بدو Storage مفعّل. استخدم رابط يوتيوب بدالو."); }
       }
       else if (link) data.videoUrl = link;
@@ -320,21 +434,49 @@ $("#post").onsubmit = async e => {
       await addDoc(collection(db, "posts"), data);
     }
     e.target.reset(); sync(); say("تم النشر وصار ظاهر على الموقع ✓");
+    localStorage.removeItem(CK); load(false, true);
   } catch (err) { console.error(err); say(err.message || "صار خطأ.", true); }
   btn.disabled = false;
 };
 const names = { story: "حكاية", video: "فيديو", photo: "صورة" };
-onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc")), snap => {
+function renderList() {
   const box = $("#list"); box.replaceChildren();
-  snap.forEach(d => {
-    const x = d.data(), row = el("div", "row");
+  posts.forEach(x => {
+    const row = el("div", "row");
     const b = el("button", "btn btn-outline btn-sm", "حذف"); b.type = "button";
-    b.onclick = async () => { if (confirm("متأكد بدك تحذف؟")) await deleteDoc(doc(db, "posts", d.id)); };
+    b.onclick = async () => { if (confirm("متأكد بدك تحذف؟")) { await deleteDoc(doc(db, "posts", x.id)); localStorage.removeItem(CK); load(false, true); } };
     row.append(el("span", "", `${names[x.type] || ""}: ${x.title || "(بدون عنوان)"}`), b);
     box.append(row);
   });
-  if (!snap.size) box.append(el("p", "empty", "ما في محتوى لسا."));
-}, () => {});
+  if (!posts.length) box.append(el("p", "empty", "ما في محتوى لسا."));
+}
+
+/* ===== تحسين الصور القديمة (مرة وحدة) ===== */
+$("#optimize").onclick = async () => {
+  const s = $("#set-msg"), btn = $("#optimize"); btn.disabled = true; s.className = "msg"; s.textContent = "جاري التحسين، لا تسكر الصفحة...";
+  let n = 0;
+  try {
+    const snap = await getDocs(query(collection(db, "posts"), orderBy("createdAt", "desc")));
+    for (const d of snap.docs) {
+      const x = d.data(); if (!x.imageUrl?.startsWith("data:") || x.thumb) continue;
+      const thumb = await toDataURL(await shrink(await (await fetch(x.imageUrl)).blob(), 480, 0.6));
+      const r = await addDoc(collection(db, "blobs"), { data: x.imageUrl });
+      await updateDoc(d.ref, { thumb, imageRef: r.id, imageUrl: deleteField() }); n++;
+    }
+    s.textContent = `تم تحسين ${n} صورة ✓`; s.className = "msg ok"; localStorage.removeItem(CK); load(false, true);
+  } catch (e) { console.error(e); s.textContent = "صار خطأ: " + (e.message || e); s.className = "msg bad"; }
+  btn.disabled = false;
+};
+
+/* ===== حركة: ظهور تدريجي عند التمرير + شرارات المخيم ===== */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); setTimeout(() => e.target.classList.remove("rv", "in"), 1500); } }), { threshold: 0.12 });
+const watch = (n, i = 0) => { n.classList.add("rv"); n.style.setProperty("--d", Math.min(i, 8) * 0.08 + "s"); io.observe(n); };
+document.querySelectorAll(".section-title,.about,.contact .hero-buttons,.more-wrap").forEach(n => watch(n));
+const seen = (n, i) => n.nodeType === 1 && !n.classList.contains("empty") && watch(n, i);
+const mo = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => seen(n, [...m.target.children].indexOf(n)))));
+Object.values(boxes).forEach(b => { [...b.children].forEach((n, i) => seen(n, i)); mo.observe(b, { childList: true }); });
+const hero = $(".hero");
+for (let i = 0; i < 16; i++) { const sp = el("span", "spark"); sp.style.cssText = `left:${Math.random() * 100}%;--s:${3 + Math.random() * 5}px;--t:${6 + Math.random() * 7}s;--dl:${-Math.random() * 10}s;--x:${(Math.random() - 0.5) * 80}px`; hero.append(sp); }
 </script>
 </body>
 </html>
